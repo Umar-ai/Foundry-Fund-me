@@ -9,7 +9,7 @@ contract fundmeTest is Test {
     FundMe fundme;
 
     function setUp() external {
-        fundme = new FundMe();
+        fundme = new FundMe(0x694AA1769357215DE4FAC081bf1f309aDC325306);
     }
 
     function testisMinimumUsdFive() public view {
@@ -19,5 +19,10 @@ contract fundmeTest is Test {
     function testisOwnerisMsgSender() public view{
         // assertEq(fundme.i_owner(),msg.sender);
         assertEq(fundme.i_owner(),address(this));
+    }
+
+    function testisVersionAccurate() public view{
+        uint256 version=fundme.getVersion();
+        assertEq(version,4);
     }
 }
