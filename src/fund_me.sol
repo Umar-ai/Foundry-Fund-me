@@ -20,7 +20,7 @@ contract FundMe {
 
     constructor(address pricefeedaddress) {
         i_owner = msg.sender;
-        priceFeed=AggregatorV3Interface(pricefeedaddress);
+        priceFeed = AggregatorV3Interface(pricefeedaddress);
     }
 
     function fund() public payable {
@@ -31,7 +31,6 @@ contract FundMe {
     }
 
     function getVersion() public view returns (uint256) {
-    
         return priceFeed.version();
     }
 

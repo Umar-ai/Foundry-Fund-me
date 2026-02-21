@@ -11,20 +11,20 @@ contract fundmeTest is Test {
 
     function setUp() external {
         DeployFundme deployFundme = new DeployFundme();
-        fundme=deployFundme.run();
+        fundme = deployFundme.run();
     }
 
     function testisMinimumUsdFive() public view {
         assertEq(fundme.MINIMUM_USD(), 5e18);
     }
 
-    function testisOwnerisMsgSender() public view{
-        assertEq(fundme.i_owner(),msg.sender);
+    function testisOwnerisMsgSender() public view {
+        assertEq(fundme.i_owner(), msg.sender);
         // assertEq(fundme.i_owner(),address(this));
     }
 
-    function testisVersionAccurate() public view{
-        uint256 version=fundme.getVersion();
-        assertEq(version,4);
+    function testisVersionAccurate() public view {
+        uint256 version = fundme.getVersion();
+        assertEq(version, 4);
     }
 }
