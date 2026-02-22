@@ -12,7 +12,7 @@ contract networkConfig is Script {
         if (block.chainid == 11155111) {
             activeNetworkConfig = sepoliaNetworkConfig();
         } else {
-            activeNetworkConfig = anvilNetworkConfig();
+            activeNetworkConfig = getOrCreateAnvilEthconfig();
         }
     }
 
@@ -25,7 +25,7 @@ contract networkConfig is Script {
         return networkconfig;
     }
 
-    function anvilNetworkConfig() public returns (Networkconfig memory) {
+    function getOrCreateAnvilEthconfig() public returns (Networkconfig memory) {
         // Check to see if we set an active network config
         if (activeNetworkConfig.priceFeed != address(0)) {
             return activeNetworkConfig;
