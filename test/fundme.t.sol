@@ -51,14 +51,14 @@ contract fundmeTest is Test {
         assertEq(funderAdress, USER);
     }
 
-    modifier funder{
+    modifier funder() {
         vm.prank(USER);
-        fundme.fund{value:AMOUNT_SENT}();
+        fundme.fund{value: AMOUNT_SENT}();
         _;
     }
 
     // function testOnlyOwnerCanWithdraw() public funder {
-    function testOnlyOwnerCanWithdraw() public  {
+    function testOnlyOwnerCanWithdraw() public {
         vm.expectRevert();
         vm.prank(USER);
         fundme.withdraw();
