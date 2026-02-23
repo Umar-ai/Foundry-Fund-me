@@ -23,7 +23,7 @@ contract fundmeTest is Test {
     }
 
     function testisOwnerisMsgSender() public view {
-        assertEq(fundme.i_owner(), msg.sender);
+        assertEq(fundme.get_owner(), msg.sender);
         // assertEq(fundme.i_owner(),address(this));
     }
 
@@ -57,10 +57,48 @@ contract fundmeTest is Test {
         _;
     }
 
-    // function testOnlyOwnerCanWithdraw() public funder {
-    function testOnlyOwnerCanWithdraw() public {
+    function testWithOutOwnerNoCanWithdraw() public funder {
         vm.expectRevert();
         vm.prank(USER);
         fundme.withdraw();
+    }
+
+    function testOnwercanwithdraw() public funder {
+        //arrange
+        uint256 ownerStartingBalance = address(fundme.get_owner()).balance;
+        uint256 fundmeContractStartingBalance = address(fundme).balance;
+
+        //act
+        vm.prank(fundme.get_owner());
+        fundme.withdraw();
+
+        //assert
+        uint256 ownerEndingBalance = address(fundme.get_owner()).balance;
+        uint256 fundmeContractEndingBalance = address(fundme).balance;
+        assertEq(fundmeContractEndingBalance, 0);
+        assertEq(ownerStartingBalance + fundmeContractStartingBalance, ownerEndingBalance);
+    }
+
+    function testWithDrawWithTooManyFunders() public {
+        uint160 NumberOfFunders = 10;
+        uint160 FunderStartingIndex = 1;
+        for (uint160 i = FunderStartingIndex; i < NumberOfFunders; i++) {
+            hoax(address(i), STARTING_BALANCE);
+            fundme.fund{value: AMOUNT_SENT}();
+        }
+        assertEq(address(fundme).balance, 0.9 ether);
+
+        uint256 ownerStartingBalance = address(fundme.get_owner()).balance;
+        uint256 fundmeContractStartingBalance = address(fundme).balance;
+
+        //act
+        vm.prank(fundme.get_owner());
+        fundme.withdraw();
+
+        //assert
+        uint256 ownerEndingBalance = address(fundme.get_owner()).balance;
+        uint256 fundmeContractEndingBalance = address(fundme).balance;
+        assertEq(fundmeContractEndingBalance, 0);
+        assertEq(ownerStartingBalance + fundmeContractStartingBalance, ownerEndingBalance);
     }
 }
