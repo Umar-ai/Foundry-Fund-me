@@ -101,4 +101,27 @@ contract fundmeTest is Test {
         assertEq(fundmeContractEndingBalance, 0);
         assertEq(ownerStartingBalance + fundmeContractStartingBalance, ownerEndingBalance);
     }
+
+    function testWithDrawWithTooManyFundersCheaper() public {
+        uint160 NumberOfFunders = 10;
+        uint160 FunderStartingIndex = 1;
+        for (uint160 i = FunderStartingIndex; i < NumberOfFunders; i++) {
+            hoax(address(i), STARTING_BALANCE);
+            fundme.fund{value: AMOUNT_SENT}();
+        }
+        assertEq(address(fundme).balance, 0.9 ether);
+
+        uint256 ownerStartingBalance = address(fundme.get_owner()).balance;
+        uint256 fundmeContractStartingBalance = address(fundme).balance;
+
+        //act
+        vm.prank(fundme.get_owner());
+        fundme.cheaperWithdraw();
+
+        //assert
+        uint256 ownerEndingBalance = address(fundme.get_owner()).balance;
+        uint256 fundmeContractEndingBalance = address(fundme).balance;
+        assertEq(fundmeContractEndingBalance, 0);
+        assertEq(ownerStartingBalance + fundmeContractStartingBalance, ownerEndingBalance);
+    }
 }
