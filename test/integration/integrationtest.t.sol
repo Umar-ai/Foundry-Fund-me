@@ -5,7 +5,7 @@ pragma solidity ^0.8.19;
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../../src/fund_me.sol";
 import {DeployFundme} from "../../script/Deployfundme.s.sol";
-import {Fundfundme} from "../../script/interaction.s.sol";
+import {Fundfundme,WithDrawMe} from "../../script/interaction.s.sol";
 
 contract fundmeTest is Test {
     FundMe fundme;
@@ -21,9 +21,11 @@ contract fundmeTest is Test {
 
     function testIntegrationFundme() public {
         Fundfundme fundfundme = new Fundfundme();
-        // vm.startPrank(USER); // Identity starts here
-        vm.deal(address(fundfundme), 1e18); // Money is here
+        vm.deal(address(fundfundme), 1e18);
         fundfundme.fundme(address(fundme));
-        vm.stopPrank();
+
+        WithDrawMe withdrawme=new WithDrawMe();
+        withdrawme.withDrawDraw(address(fundme));
+
     }
 }

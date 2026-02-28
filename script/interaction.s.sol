@@ -21,16 +21,17 @@ contract Fundfundme is Script {
     }
 }
 
-// contract WithDrawMe is Script{
-//     function withDrawDraw(address mostRecentContractAdress)public{
-//         vm.startBroadcast();
-//         FundMe(payable(mostRecentContractAdress)).withdraw();
-//         vm.stopBroadcast();
-//     }
+contract WithDrawMe is Script{
+    function withDrawDraw(address mostRecentContractAdress)public{
+        vm.startBroadcast();
+        FundMe(payable(mostRecentContractAdress)).withdraw();
+        vm.stopBroadcast();
+    }
 
-//     function run() public {
-//         address latestContractAddres = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
-//         WithDrawMe(latestContractAddres);
-//         console.log("Withdrawed");
-//     }
-// }
+    function run() public {
+        vm.startBroadcast();
+        address latestContractAddres = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
+        WithDrawMe(latestContractAddres);
+        vm.stopBroadcast();
+    }
+}
