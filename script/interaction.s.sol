@@ -21,8 +21,8 @@ contract Fundfundme is Script {
     }
 }
 
-contract WithDrawMe is Script{
-    function withDrawDraw(address mostRecentContractAdress)public{
+contract WithDrawMe is Script {
+    function withDrawDraw(address mostRecentContractAdress) public {
         vm.startBroadcast();
         FundMe(payable(mostRecentContractAdress)).withdraw();
         vm.stopBroadcast();
